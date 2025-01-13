@@ -1,6 +1,6 @@
 {
   "name": "ssv.avado.dappnode.eth",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "upstream": "v2.0.0",
   "autoupdate": true,
   "title": "SSV operator package",
@@ -25,6 +25,9 @@
   },
   "author": "AVADO",
   "license": "GLP-3.0",
+  "dependencies": {
+    "mevboost-ap.avado.dnp.dappnode.eth": ""
+  },
   "links": {
     "OnboardingWizard": "http://ssv.my.ava.do"
   }

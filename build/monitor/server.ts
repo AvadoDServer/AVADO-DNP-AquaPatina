@@ -4,9 +4,6 @@ import { SupervisorCtl } from "./SupervisorCtl";
 import { server_config } from "./server_config";
 import { rest_url, validatorAPI, getAvadoPackageName, getTokenPathInContainer, getAvadoExecutionClientPackageName, client_url, ws_url } from "./urls";
 import { DappManagerHelper } from "./DappManagerHelper";
-import { readFileSync } from "fs";
-import AdmZip from 'adm-zip';
-import cache from "memory-cache";
 import { SSV } from './ssv';
 import { SSVAPI } from './ssv-api';
 import { BackupRestore } from './backup-restore';
@@ -776,15 +773,15 @@ const checkConfig = async () => {
         const clients = await getPackages()
         console.log("Installed clients", clients);
 
-        if (clients.includes("mevboost.avado.dnp.dappnode.eth")) {
+        if (clients.includes("mevboost-ap.avado.dnp.dappnode.eth")) {
             configResultList.push({
                 status: "ok",
-                description: "MEV-boost package is installed"
+                description: "Aquapatina MEV-boost package is installed"
             })
         } else {
             configResultList.push({
                 status: "nok",
-                description: "MEV-boost package is not installed"
+                description: "Aquapatina MEV-boost package is not installed"
             });
             globalStatusOK = false;
         }
@@ -794,28 +791,30 @@ const checkConfig = async () => {
                 status: "ok",
                 description: "Nethermind package is installed"
             })
-        } else {
-            configResultList.push({
-                status: "nok",
-                description: "Nethermind package is not installed"
-            });
-            globalStatusOK = false;
         }
+        //else {
+        //     configResultList.push({
+        //         status: "nok",
+        //         description: "Nethermind package is not installed"
+        //     });
+        //     globalStatusOK = false;
+        // }
 
         if (clients.includes("teku.avado.dnp.dappnode.eth")) {
             configResultList.push({
                 status: "ok",
                 description: "Teku package is installed"
             })
-        } else {
-            configResultList.push({
-                status: "nok",
-                description: "Teku package is not installed"
-            });
-            globalStatusOK = false;
         }
+        //else {
+        //     configResultList.push({
+        //         status: "nok",
+        //         description: "Teku package is not installed"
+        //     });
+        //     globalStatusOK = false;
+        // }
 
-        let envs = await getEnvs("mevboost.avado.dnp.dappnode.eth");
+        let envs = await getEnvs("mevboost-ap.avado.dnp.dappnode.eth");
 
         if (!envs) {
             configResultList.push({
@@ -826,16 +825,16 @@ const checkConfig = async () => {
         } else {
             if (envs.RELAYS !== server_config.mev_relays) {
                 console.log(`setting correct RELAYS for MEVboost : ${server_config.mev_relays}`)
-                await writeEnv("mevboost.avado.dnp.dappnode.eth", "RELAYS", server_config.mev_relays)
+                await writeEnv("mevboost-ap.avado.dnp.dappnode.eth", "RELAYS", server_config.mev_relays)
             }
 
             if (envs.EXTRA_OPTS !== server_config.mev_extra_opts) {
                 console.log(`setting correct EXTRA_OPTS for MEVboost : ${server_config.mev_extra_opts}`)
-                await writeEnv("mevboost.avado.dnp.dappnode.eth", "EXTRA_OPTS", server_config.mev_extra_opts)
+                await writeEnv("mevboost-ap.avado.dnp.dappnode.eth", "EXTRA_OPTS", server_config.mev_extra_opts)
             }
 
             // check again
-            envs = await getEnvs("mevboost.avado.dnp.dappnode.eth");
+            envs = await getEnvs("mevboost-ap.avado.dnp.dappnode.eth");
 
             if (envs.RELAYS !== server_config.mev_relays) {
                 configResultList.push({
